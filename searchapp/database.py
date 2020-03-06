@@ -29,7 +29,6 @@ class Catalog:
         response = requests.get(
             "https://www.omdbapi.com/", params={"i": imdbId, "apikey": settings.OMDB_API_KEY})
         movie = json.loads(response.text)
-        print(response.status_code)
         return movie
 
     def filter(self, **kwargs):
@@ -79,7 +78,7 @@ class Catalog:
         if Id.isnumeric():
             movie = list(filter(lambda x: x.get("id") == Id, self._movies))
             if not movie:
-                return {"success": False, "Error": "Incorrect ID."}
+                return {"success": False, "Response":"False", "Error": "Incorrect ID."}
             Id = movie[0].get("imdbId")
             # imdb_movie = self._search_omdb_catalog(imdb_id)
 
@@ -89,7 +88,6 @@ class Catalog:
         movie = list(filter(lambda x: x.get("imdbId") ==
                             imdb_movie.get('imdbID'), self._movies))
         if imdb_movie.get("Response") == "True":
-            print("True")
             return Merger.merge(imdb_movie,movie[0] if movie else {})
         return imdb_movie
 
