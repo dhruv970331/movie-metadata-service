@@ -1,3 +1,4 @@
+#TODO Refactor code
 class Merger:
     overwrite = ['title', 'description', 'Runtime']
     transform = ['Director', 'Writer', 'Actors']
@@ -14,7 +15,7 @@ class Merger:
             merger = cls(imdb_movie, movie)
             return merger.merged_obj
         return imdb_movie
-    
+
     @property
     def merged_obj(self):
         self._apply_overwrite()
@@ -36,7 +37,8 @@ class Merger:
         """
         for field in self.transform:
             if self.movie.get(field):
-                self.movie[field] = [x.strip() for x in self.movie.get(field).split(',')]
+                self.movie[field] = [x.strip()
+                                     for x in self.movie.get(field).split(',')]
 
     def _apply_ratings(self):
         """
@@ -44,8 +46,8 @@ class Merger:
         """
         ratings = self.movie.get('userrating')
         values = list(ratings.values())[:-1]
-        s = sum([int(v)*(i+1) for i,v in enumerate(values)])
-        t = sum([int(v)*5 for i,v in enumerate(values)])
-        self.movie['Ratings'] = {"Source":"Avg. user rating","Value":str(s*100//t)}
+        s = sum([int(v)*(i+1) for i, v in enumerate(values)])
+        t = sum([int(v)*5 for i, v in enumerate(values)])
+        self.movie['Ratings'] = {
+            "Source": "Avg. user rating", "Value": str(s*100//t)}
         self.movie.pop("userrating")
-        

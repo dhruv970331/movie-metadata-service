@@ -71,7 +71,7 @@ class KeywordSearchTest(APITestCase):
             'Source': 'Avg. user rating', 'Value': '87'}, 'Metascore': '65', 'imdbRating': '7.6', 'imdbVotes': '157,472', 'imdbID': 'tt0061852', 'Type': 'movie', 'DVD': '11 Feb 2014', 'BoxOffice': 'N/A', 'Production': 'Buena Vista Pictures', 'Website': 'N/A', 'Response': 'True', 'duration': '75', 'id': '11528860', 'imdbId': 'tt0061852', 'languages': ['de', 'en'], 'originalLanguage': 'en', 'productionYear': '1967', 'studios': ['disney']}]
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response_content.get("data")), 1)
-        self.assertEqual(response_content.get("data"),expected)
+        self.assertEqual(response_content.get("data"), expected)
 
     def test_keyword_in_array(self):
         get_parameters = "?lAnGuAges=en"

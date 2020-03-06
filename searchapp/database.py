@@ -4,7 +4,9 @@ import requests
 from django.conf import settings
 from .rules import Merger
 
+
 class Catalog:
+    #TODO Refactor code
     catalog_path = "movies"
 
     def __init__(self):
@@ -41,7 +43,7 @@ class Catalog:
         if not kwargs.keys():
             return movies
         filtered_movies = []
-        kv_pairs = {self.key_case.get(k.lower()):v for k,v in kwargs.items()}
+        kv_pairs = {self.key_case.get(k.lower()): v for k, v in kwargs.items()}
         if (set(kv_pairs.keys()).issubset(set(self.key_case.values()))):
             for movie in self._movies:
                 for key, value in kv_pairs.items():
@@ -57,7 +59,7 @@ class Catalog:
                         break
                 if flag:
                     imdb_movie = self._search_omdb_catalog(movie.get('imdbId'))
-                    filtered_movies.append(Merger.merge(imdb_movie,movie))
+                    filtered_movies.append(Merger.merge(imdb_movie, movie))
         return filtered_movies
 
     def search_by_id(self, Id):
@@ -69,7 +71,7 @@ class Catalog:
         if Id.isnumeric():
             movie = list(filter(lambda x: x.get("id") == Id, self._movies))
             if not movie:
-                return {"success": False, "Response":"False", "Error": "Incorrect ID."}
+                return {"success": False, "Response": "False", "Error": "Incorrect ID."}
             Id = movie[0].get("imdbId")
             # imdb_movie = self._search_omdb_catalog(imdb_id)
 
@@ -79,7 +81,7 @@ class Catalog:
         movie = list(filter(lambda x: x.get("imdbId") ==
                             imdb_movie.get('imdbID'), self._movies))
         if imdb_movie.get("Response") == "True":
-            return Merger.merge(imdb_movie,movie[0] if movie else {})
+            return Merger.merge(imdb_movie, movie[0] if movie else {})
         return imdb_movie
 
 
