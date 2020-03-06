@@ -8,10 +8,12 @@ class Catalog:
     catalog_path = "movies"
 
     def __init__(self):
+        """
+        Populate catalogue
+        """
         self._movies = []
         for movie in os.listdir(self.catalog_path):
             with open(os.path.join(self.catalog_path, movie), "r") as f:
-                # self.movies[movie.split('.')[0]] = json.load(f)
                 m = json.load(f)
                 self._movies.append({k: self._get_append_value(v)
                                      for k, v in m.items()})
@@ -32,6 +34,9 @@ class Catalog:
         return movie
 
     def filter(self, **kwargs):
+        """
+        filter for keword search, return all movies in catalog if no keywords are provided
+        """
         movies = self._movies.copy()
         if not kwargs.keys():
             return movies
@@ -53,26 +58,12 @@ class Catalog:
                 if flag:
                     imdb_movie = self._search_omdb_catalog(movie.get('imdbId'))
                     filtered_movies.append(Merger.merge(imdb_movie,movie))
-
-                
-        # for key, value in kwargs.items():
-        #     value = value.lower()
-        #     key = self.key_case.get(key.lower())
-        #     print(key)
-        #     for movie in movies:
-        #         item = movie.get(key)
-        #         if type(item) is list:
-        #             if value in [x.lower() for x in item]:
-        #                 imdb_movie = self._search_omdb_catalog(movie.get('imdbId'))
-        #                 filtered_movies.append(Merger.merge(imdb_movie,movie))
-        #                 continue
-        #         if value == item:
-        #             imdb_movie = self._search_omdb_catalog(movie.get('imdbId'))
-        #             filtered_movies.append(Merger.merge(imdb_movie, movie))
-
         return filtered_movies
 
     def search_by_id(self, Id):
+        """
+        Search local and omdb catalogue for movies by id
+        """
         # if id is numeric try to get movie from local catalogue
 
         if Id.isnumeric():

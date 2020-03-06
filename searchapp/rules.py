@@ -23,16 +23,25 @@ class Merger:
         return self.movie
 
     def _apply_overwrite(self):
+        """
+            Remove field as per rules after merging
+        """
         for field in self.overwrite:
             if self.movie.get(field):
                 self.movie.pop(field)
 
     def _apply_transform(self):
+        """
+            Apply transforms to fields: change str fields to arrays as per rules
+        """
         for field in self.transform:
             if self.movie.get(field):
                 self.movie[field] = [x.strip() for x in self.movie.get(field).split(',')]
 
     def _apply_ratings(self):
+        """
+            Calculate average ratings by multplying star counts with corresponding values of stars and totaling with total number of stars to get average percentage user rating
+        """
         ratings = self.movie.get('userrating')
         values = list(ratings.values())[:-1]
         s = sum([int(v)*(i+1) for i,v in enumerate(values)])
